@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.anti.dto.ArticleDto;
 import com.example.anti.file.FileStore;
+import com.example.anti.file.ImageProcessor;
 import com.example.anti.form.ArticleForm;
 import com.example.anti.entity.Article;
 import com.example.anti.entity.Image;
@@ -35,6 +36,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final FileStore fileStore;
     private final AmazonS3Client amazonS3Client;
+    private final ImageProcessor imageProcessor;
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -61,6 +64,8 @@ public class ArticleService {
         objectMetadata.setContentType(imageFile.getContentType());;
         objectMetadata.setContentLength(imageFile.getSize());
         amazonS3Client.putObject(bucket,storeFileName,imageFile.getInputStream(),objectMetadata);
+        imageProcessor.cropImage(getS3URI(image.getStoreFileName()), image.getStoreFileName());
+        imageProcessor.blurImage(getS3URI(image.getStoreFileName()), image.getStoreFileName());
     }
 
     public List<ArticleDto> getArticles(){
@@ -73,5 +78,8 @@ public class ArticleService {
         return dtos;
     }
 
+    private String getS3URI(String filename){
+        return "https://antiimages.s3.ap-northeast-2.amazonaws.com/" +filename;
+    }
 
 }
