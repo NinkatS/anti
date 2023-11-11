@@ -2,7 +2,7 @@ package com.example.anti.file;
 
 
 
-import com.example.anti.domain.UploadFile;
+import com.example.anti.model.Image;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +24,8 @@ public class FileStore {
         return fileDir + filename;
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
-        List<UploadFile> storeFileResult = new ArrayList<>();
+    public List<Image> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+        List<Image> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if(!multipartFile.isEmpty())
                 storeFileResult.add(storeFile(multipartFile));
@@ -34,7 +34,7 @@ public class FileStore {
     }
 
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public Image storeFile(MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()){
             return null;
         }
@@ -42,7 +42,10 @@ public class FileStore {
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
-        return new UploadFile(originalFilename, storeFileName);
+        Image image = new Image();
+        image.setUploadFileName(originalFilename);
+        image.setStoreFileName(storeFileName);
+        return image;
     }
 
     private static String createStoreFileName(String originalFilename) {
