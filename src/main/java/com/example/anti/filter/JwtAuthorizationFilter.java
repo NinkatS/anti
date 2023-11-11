@@ -3,7 +3,7 @@ package com.example.anti.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.anti.auth.PrincipalDetails;
-import com.example.anti.model.User;
+import com.example.anti.entity.User;
 import com.example.anti.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

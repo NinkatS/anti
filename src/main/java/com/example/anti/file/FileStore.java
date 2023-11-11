@@ -2,13 +2,14 @@ package com.example.anti.file;
 
 
 
-import com.example.anti.model.Image;
+import com.example.anti.entity.Image;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,17 +39,16 @@ public class FileStore {
         if(multipartFile.isEmpty()){
             return null;
         }
-
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
         Image image = new Image();
-        image.setUploadFileName(originalFilename);
+        image.setOriginalFileName(originalFilename);
         image.setStoreFileName(storeFileName);
         return image;
     }
 
-    private static String createStoreFileName(String originalFilename) {
+    public static String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + ext;

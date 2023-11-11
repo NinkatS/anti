@@ -18,6 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig  {
 
     private final UserRepository userRepository;
+    private final CorsFilter corsFilter;
 
     @Bean
     SecurityFilterChain config(HttpSecurity http) throws Exception {
@@ -45,7 +46,8 @@ public class SecurityConfig  {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository))
+                    .addFilter(corsFilter);
         }
     }
 }

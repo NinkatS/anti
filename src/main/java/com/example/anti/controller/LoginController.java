@@ -1,16 +1,14 @@
 package com.example.anti.controller;
 
 
-import com.example.anti.model.User;
+import com.example.anti.entity.User;
 import com.example.anti.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class LoginController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

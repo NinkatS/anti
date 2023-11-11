@@ -1,6 +1,6 @@
 package com.example.anti.repository;
 
-import com.example.anti.model.Comment;
+import com.example.anti.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

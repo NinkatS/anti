@@ -1,6 +1,6 @@
 package com.example.anti.auth;
 
-import com.example.anti.model.User;
+import com.example.anti.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

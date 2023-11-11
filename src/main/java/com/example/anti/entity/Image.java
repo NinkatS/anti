@@ -1,4 +1,4 @@
-package com.example.anti.model;
+package com.example.anti.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class Image {
     @OneToOne(mappedBy = "image", fetch = FetchType.LAZY)
     private Article article;
 
-    private String uploadFileName;
+    private String originalFileName;
     private String storeFileName;
 
 }

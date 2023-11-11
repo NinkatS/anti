@@ -1,6 +1,6 @@
 package com.example.anti.auth;
 
-import com.example.anti.model.User;
+import com.example.anti.entity.User;
 import com.example.anti.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

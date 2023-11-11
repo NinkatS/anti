@@ -1,4 +1,4 @@
-package com.example.anti.model;
+package com.example.anti.entity;
 
 
 import jakarta.persistence.*;

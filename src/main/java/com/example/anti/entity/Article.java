@@ -1,12 +1,7 @@
-package com.example.anti.model;
+package com.example.anti.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
-
-import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "articles")
