@@ -18,7 +18,7 @@ export default function Login(){
     function handleSubmit(event){
         event.preventDefault();
         if(account.username && account.password) {
-            axios.post("http://localhost:8080/login", account)
+            axios.post("http://43.202.9.254:8080/join", account)
             .then((result)=>{
                 console.log(result.data);
                 if(result.data.status === "success") {

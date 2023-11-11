@@ -3,21 +3,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
 
-export default function Main(){
+export default function Mypage(){
     
-    const [Feed, SetFeed] = useState({
-        userName:"",
+    const [myFeed, setMyFeed] = useState({
         
     })
 
-    function getUserFeed(event){
+    function handleGet(event){
         event.preventDefault();
-        axios.get("http://43.202.9.254:8080/join",Feed)
+        axios.get("http://43.202.9.254:8080/join", myFeed)
         .then((result)=>{
-            console.log(result.data);
+            console.log(result.data)
         })
     }
-
+    
     return(
         <>
         asd
