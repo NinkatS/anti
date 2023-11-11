@@ -1,37 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function Main(){
-    
-    const [feed, SetFeed] = useState({
-        userid:"",
-        BlurImage:"",
-        text:""
-    })
+export default function Main() {
+  const [feeds, setFeeds] = useState([]);
 
-    useEffect(()=>{
-        getUserFeed();
-    }, [])
+  useEffect(() => {
+    getUserFeeds();
+  }, []);
 
+  function getUserFeeds() {
+    axios.get("http://localhost:8080/")
+      .then((result) => {
+        console.log(result.data);
+        setFeeds(result.data);
+      })
+      .catch((error) => {
+        console.error("Error getting user feeds:", error);
+      });
+  }
 
-    function getUserFeed(event){
-        event.preventDefault();
-        axios.get("http://localhost:8080/",feed)
-        .then((result)=>{
-            console.log(result.data);
-        })
-        .catch((e)=>console.log(e))
-    }
-
-    return(
-        <div>
-        {feed.map((feed, index) => (
-          <div key={index} className="card">
-            {feed.userid && <p>User ID: {feed.userid}</p>}
-            {feed.BlurImage && <img src={feed.BlurImage} alt="Blurred" />}
-            {feed.text && <p>{feed.text}</p>}
-          </div>
-        ))}
-      </div>
-    )
+  return (
+    <div>
+        <div className="card">
+          {feeds.username && <p>User ID: {feeds.username}</p>}
+          {feeds.BlurImage && <img src={feeds.BlurImage} alt="Blurred" />}
+          {feeds.text && <p>{feeds.text}</p>}
+        </div>
+    </div>
+  );
 }

@@ -13,8 +13,7 @@ export default function Mypage(){
         handleGet();
     }, [])
 
-    function handleGet(event){
-        event.preventDefault();
+    function handleGet(){
         axios.get("http://localhost:8080/", myFeed)
         .then((result)=>{
             console.log(result.data)
