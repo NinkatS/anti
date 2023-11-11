@@ -15,11 +15,13 @@ export default function Mypage(){
     }, [])
 
     function handleGet(){
-        axios.get("http://localhost:8080/", myFeed)
-        .then((result)=>{
-            console.log(result.data);
-            setMyInfo(result.data);
-        })
+        const uri = `http://localhost:8080/${myFeed.username}`;
+        
+        axios.get(uri, myFeed)
+            .then((result)=>{
+                console.log(result.data);
+                setMyInfo(result.data);
+            })
     }
 
     function handleUpload() {
