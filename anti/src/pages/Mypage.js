@@ -1,25 +1,31 @@
-import React, { useState,useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {useNavigate} from "react-router-dom"
-import axios from "axios"
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 export default function Mypage(){
     
     const [myFeed, setMyFeed] = useState({
-        
+        username:"",
+        profile:"",
+        role:""
     })
+
+    useEffect(()=>{
+        handleGet();
+    }, [])
 
     function handleGet(event){
         event.preventDefault();
-        axios.get("http://43.202.9.254:8080/join", myFeed)
+        axios.get("http://localhost:8080/", myFeed)
         .then((result)=>{
             console.log(result.data)
         })
     }
     
     return(
-        <>
-        asd
-        </>
+        <div>
+        <h2>{myFeed.username}</h2>
+        {myFeed.profile && <img src={myFeed.profile} alt="Profile" />}
+        <p>Role: {myFeed.role}</p>
+      </div>
     )
 }

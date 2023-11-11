@@ -1,7 +1,5 @@
-import React, { useState,useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {useNavigate} from "react-router-dom"
-import axios from "axios"
+import axios from "axios";
+import React, { useState } from "react";
 
 export default function Login(){
 
@@ -18,9 +16,9 @@ export default function Login(){
     function handleSubmit(event){
         event.preventDefault();
         if(account.username && account.password) {
-            axios.post("http://43.202.9.254:8080/join", account)
+            axios.post("http://localhost:8080/join", account)
             .then((result)=>{
-                console.log(result.data);
+                console.log(JSON.stringify(result.data));
                 if(result.data.status === "success") {
                     setAccount({ username: account.username, password: account.password });
                     setUserAuth(result.data);
