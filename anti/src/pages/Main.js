@@ -20,15 +20,12 @@ export default function Main() {
   }
 
   return (
-    // <div>
-    //     <div className="card">
-    //       {feeds.username && <p>User ID: {feeds.username}</p>}
-    //       {feeds.BlurImage && <img src={feeds.BlurImage} alt="Blurred" />}
-    //       {feeds.text && <p>{feeds.text}</p>}
-    //     </div>
-    // </div>
-    <>
-    <a>asd</a>
-    </>
+    <div>
+        <div className="card">
+          {feeds.username && <p>User ID: {feeds.username}</p>}
+          {feeds.BlurImage && <img src={feeds.BlurImage} alt="Blurred" />}
+          {feeds.text && <p>{feeds.text}</p>}
+        </div>
+    </div>
   );
 }
