@@ -1,19 +1,29 @@
 // Mypage.js
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Mypage() {
   const [myFeed, setMyFeed] = useState({
-    username: "name", // Replace with the actual username
+    username: "", // Initialize with an empty string
     profile: null,
   });
 
-  const [myinfo, setMyInfo] = useState("");
+  const [myInfo, setMyInfo] = useState("");
 
-  // useEffect(() => {
-  //   handleGet();
-  // }, []);
+  useEffect(() => {
+    // Read username from cookie when the component mounts
+    const username = getCookie("username");
+    setMyFeed((prevFeed) => ({ ...prevFeed, username }));
+    handleGet(); // Fetch additional user information
+  }, []); // The empty dependency array ensures that this effect runs once when the component mounts
+
+  // Function to get cookie value by name
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  };
 
   function handleGet() {
     const uri = `http://localhost:8080/${myFeed.username}`;
@@ -70,6 +80,7 @@ export default function Mypage() {
       <h2 className="text-2xl font-bold mb-4 flex items-center justify-center">{myFeed.username}</h2>
 
       {/* Additional user information can be displayed here (e.g., bio, posts, followers, etc.) */}
+      <p>{myInfo}</p>
 
       <input
         type="file"

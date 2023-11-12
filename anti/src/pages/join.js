@@ -14,9 +14,9 @@ export default function Join() {
 
   function handleJoinSuccess(result) {
     // Assuming you want to redirect to "/" after successful registration
-    localStorage.setItem("token", result.headers["authorization"]);
-    document.cookie = `account=${JSON.stringify(account)}; path=/`; // Set the account information in a cookie
-    navigate("/", { state: { account } });
+    document.cookie = `token=${result.headers["authorization"]}; path=/`;
+    document.cookie = `username=${account.username}; path=/`; // Set the username in a cookie
+    navigate("/"); // Redirect to "/"
   }
 
   function handleSubmit(event) {
@@ -26,7 +26,7 @@ export default function Join() {
         .post("http://localhost:8080/join", account)
         .then((result) => {
           console.log(JSON.stringify(result.data));
-          if (result.data.status === "success") {
+          if (result.data) {
             // Handle successful registration
             handleJoinSuccess(result);
           }

@@ -1,5 +1,7 @@
+// Header.js
+
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Header() {
   const [uploadFeed, setUploadFeed] = useState({
@@ -8,6 +10,7 @@ export default function Header() {
   });
 
   const [isModalOpen, setModalOpen] = useState(false);
+  
 
   // 쿠키에서 계정 정보 읽어오기
   const getCookie = (name) => {
@@ -18,7 +21,12 @@ export default function Header() {
 
   const username = getCookie('username');
   const token = getCookie('token');
-  const isLoggedIn = !!username && !!token;
+  const [isLoggedIn, setIsLoggedIn] = useState(!!username && !!token);
+
+
+  useEffect(() => {
+    // 여기에서 필요한 초기 작업을 수행할 수 있어
+  }, []); // 빈 배열을 전달하면 컴포넌트가 마운트될 때 한 번만 실행돼
 
   function UploadFeed() {
     const formData = new FormData();
@@ -82,14 +90,7 @@ export default function Header() {
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <a href="/" className="flex items-center">
-            <img
-              src="https://jmagazine.joins.com/_data2/photo/2023/02/2041357502_GrBcZaz9_1.jpg"
-              className="mr-3 h-6 sm:h-9"
-              alt="Flowbite Logo"
-            />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              Anti AI
-            </span>
+            {/* ... */}
           </a>
           <div className="flex items-center lg:order-2">
             {isLoggedIn ? (
@@ -100,6 +101,10 @@ export default function Header() {
                     // 쿠키에서 계정 정보 삭제
                     document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    // isLoggedIn 상태를 업데이트
+                    setIsLoggedIn(false);
+                    // 모달을 열지 않도록 수정
+                    setModalOpen(false);
                   }}
                   className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
                 >
@@ -114,35 +119,42 @@ export default function Header() {
                 >
                   Log in
                 </a>
-
-                <a
-                  href={isLoggedIn ? "#" : "/login"}
-                  className={`text-white ${
-                    isLoggedIn
-                      ? "bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300"
-                      : "bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
-                  } font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 ${
-                    isLoggedIn
-                      ? "dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                      : "dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-                  }`}
-                  onClick={() => {
-                    if (!isLoggedIn) {
-                      window.location.href = "/login";
-                    } else {
-                      setModalOpen(isModalOpen);
-                    }
-                  }}
-                >
-                  Get started
-                </a>
+                {isLoggedIn ? (
+                  <>
+                    <span className="text-gray-800 dark:text-white mr-2">Welcome, {username}!</span>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href={isLoggedIn ? "#" : "/login"}
+                      className={`text-white ${
+                        isLoggedIn
+                          ? "bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300"
+                          : "bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
+                      } font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 ${
+                        isLoggedIn
+                          ? "dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                          : "dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                      }`}
+                      onClick={() => {
+                        if (!isLoggedIn) {
+                          window.location.href = "/login";
+                        } else {
+                          setModalOpen(true);
+                        }
+                      }}
+                    >
+                      Get started
+                    </a>
+  </>
+)}
 
                 <button
                   data-collapse-toggle="mobile-menu-2"
                   type="button"
                   className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                   aria-controls="mobile-menu-2"
-                  aria-expanded="false"
+                  aria-expanded="false"   
                 >
                   <span className="sr-only">Open main menu</span>
                   <svg
@@ -219,6 +231,17 @@ export default function Header() {
                   Contact
                 </a>
               </li>
+              <li>
+  {isLoggedIn && (
+    <a
+      href="#"
+      onClick={() => setModalOpen(true)}
+      className="block py-2 pr-4 pl-3 text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+    >
+      Make Story
+    </a>
+  )}
+</li>
             </ul>
           </div>
         </div>
