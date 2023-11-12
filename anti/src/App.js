@@ -48,6 +48,7 @@ function App() {
             path="/mypage"
             element={
               <>
+                <Header />
                 <Mypage />
                 <Footer />
               </>
