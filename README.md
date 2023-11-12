@@ -19,5 +19,20 @@
 
 [Bearer 방식 JWT 로그인] 
 ![image](https://github.com/NinkatS/anti/assets/91305949/a1bbd5e3-e28f-4cf6-a0dc-6b304ccc034e)
+Bearer 방식의 JWT 토큰을 이용해 로그인을 구현했습니다.
+
+1. 회원가입
+클라이언트가 최초에 회원가입을 요청하면 서버는 database에 회원의 id와 BCryptPasswordEncoder로 인코딩된 password를 데이터베이스에 저장합니다.
+
+2. 로그인
+클라이언트가 로그인시 id와 password를 서버에 전달하면 서버에서 password를 BCryptPasswordEncoder로
+인코딩후 데이터베이스의 유저 id, password와 비교해 검증합니다.
+검증 완료 후, 유저정보를 jwt토큰으로 변환한 후 클라이언트에게 반환합니다.
+
+3. 인증
+클라이언트가 로그인 후 클라이언트가 request를 하면 header에 jwt토큰을 담아서 요청을 진행하게 되며 서버는
+클라이언트의 jwt토큰을 검증 후 response를 반환합니다.
+
+
 
 
