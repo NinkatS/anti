@@ -21,7 +21,7 @@ export default function Login() {
     event.preventDefault();
     if (account.username && account.password) {
       axios
-        .post("http://localhost:8080/login, account)
+        .post("http://localhost:8080/login", account)
         .then((result) => {
           console.log(JSON.stringify(result.data));
           if (result.data.status === "success") {
