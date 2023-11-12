@@ -4,7 +4,6 @@ import "../App.css";
 
 export default function Header({ account }) {
   const [uploadFeed, setUploadFeed] = useState({
-    //username: "",
     image: null,
     text: "",
   });
@@ -49,9 +48,9 @@ export default function Header({ account }) {
     return (
       <div className="modal mt-10 mb-10 flex justify-center items-center">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input type="text" name="username" value={account.username} readOnly/>
-          <input type="file" name="image" placeholder="Image URL" />
-          <textarea name="text" placeholder="Text"></textarea>
+          <input type="text" name="username" value={account.username} readOnly />
+          <input type="file" name="image" placeholder="Image URL" onChange={handleInputChange} />
+          <textarea name="text" placeholder="Text" onChange={handleInputChange}></textarea>
           <button
             className="ml-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             type="submit"
@@ -106,9 +105,23 @@ export default function Header({ account }) {
                 </a>
 
                 <a
-                  href="#"
-                  className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                  onClick={() => setModalOpen(!isModalOpen)}
+                  href={isLoggedIn ? "#" : "/login"}
+                  className={`text-white ${
+                    isLoggedIn
+                      ? "bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300"
+                      : "bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
+                  } font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 ${
+                    isLoggedIn
+                      ? "dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      : "dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                  }`}
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      window.location.href = "/login";
+                    } else {
+                      setModalOpen(!isModalOpen);
+                    }
+                  }}
                 >
                   Get started
                 </a>
@@ -164,12 +177,20 @@ export default function Header({ account }) {
                 </a>
               </li>
               <li>
-                <a
-                  href="/mypage"
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Mypage
-                </a>
+              <a
+                href={isLoggedIn ? "/mypage" : "/login"}
+                className={`text-white ${
+                  isLoggedIn
+                    ? "bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300"
+                    : "bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
+                } font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 ${
+                  isLoggedIn
+                    ? "dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                    : "dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                }`}
+              >
+                {isLoggedIn ? "Mypage" : "Mypage"}
+              </a>
               </li>
               <li>
                 <a
