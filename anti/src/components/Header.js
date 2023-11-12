@@ -14,56 +14,34 @@ export default function Header({ account }) {
     username: "",
   });
 
-  const [authorization, setAuthorization] = useState(""); // authorization¿¡ accessToken
+  const [authorization, setAuthorization] = useState(""); 
   const setUserAuth = (token) => {
     setAuthorization(token);
   };
 
   useEffect(() => {
     // 페이지 로딩 시 로그인 여부 확인
-    checkLoginStatus();
+    getUserLogin();
   }, []);
 
-  const checkLoginStatus = () => {
-    // 이 부분에서 서버로부터 로그인 상태를 확인하는 요청을 보내세요.
-    // axios.get 또는 다른 방법을 사용하여 서버와 통신하여 로그인 여부를 확인합니다.
-    // 서버에서는 토큰 또는 세션 등의 방법으로 로그인 여부를 판단할 수 있습니다.
-    // 서버에서 로그인 여부를 판단하는 방법에 따라 수정이 필요할 수 있습니다.
-    // 아래 예시는 가정일 뿐이며, 실제 구현에 맞게 변경해야 합니다.
 
-    const token = localStorage.getItem("token"); // 예시로 로컬 스토리지에서 토큰을 가져옴
-    // const navigate = useNavigate();
 
-    if (token) {
-      // 토큰이 있다면 로그인 상태로 간주
+
+    function getUserLogin() {
+            // 로그인된 사용자 정보를 가져오는 요청을 보내세요.
+    axios
+    .get("http://localhost:8080/login", accountData)
+      .then((response) => {
+      setAccountData({ username: response.headers });
       setLoggedIn(true);
-
-      // 로그인된 사용자 정보를 가져오는 요청을 보내세요.
-      axios
-        .get("http://localhost:8080/login", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setAccountData({ username: response.headers });
-  
-        })
-        .catch((error) => {
-          console.error("Error fetching user information:", error);
-        });
-    } else {
-      // 토큰이 없다면 로그아웃 상태로 간주
-      setLoggedIn(false);
+      })
+      .catch((error) => {
+      console.error("Error fetching user information:", error);
+      });
     }
-  };
 
-  const handleLogout = () => {
-    // 로그아웃 처리를 수행하는 함수
-    // 이 부분에서 서버에 로그아웃 요청을 보낼 수도 있습니다.
-    setLoggedIn(false);
-    localStorage.removeItem("token");
-  };
+
+
 
   function UploadFeed() {
     const formData = new FormData();
