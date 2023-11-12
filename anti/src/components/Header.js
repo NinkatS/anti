@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react";
 
 export default function Header() {
   const [uploadFeed, setUploadFeed] = useState({
-    image: null,
     text: "",
+    //image:null
   });
+
 
   const [isModalOpen, setModalOpen] = useState(false);
   
@@ -31,11 +32,15 @@ export default function Header() {
   function UploadFeed() {
     const formData = new FormData();
     formData.append("username", username);
-    formData.append("image", uploadFeed.image);
+    formData.append("image", uploadFeed.image); // 이미지 파일의 이름 추가
     formData.append("text", uploadFeed.text);
-
+  
     axios
-      .post("http://localhost:8080/article/new", formData)
+      .post("http://localhost:8080/article/new", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Content-Type 설정
+        },
+      })
       .then((result) => {
         console.log(result.data);
       })
@@ -43,14 +48,21 @@ export default function Header() {
   }
 
   function handleInputChange(e) {
-    const { name, value, type } = e.target;
-
+    const { name, type } = e.target;
+  
     if (type === "file") {
-      setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: e.target.files[0] }));
+      // 파일이 선택되었는지 확인
+      if (e.target.files.length > 0) {
+        setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: e.target.files[0] }));
+      } else {
+        // 파일을 선택하지 않았을 때는 빈 문자열로 설정
+        setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: null }));
+      }
     } else {
-      setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: value }));
+      setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: e.target.value }));
     }
   }
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -63,25 +75,25 @@ export default function Header() {
     }
 
     return (
-      <div className="modal mt-10 mb-10 flex justify-center items-center">
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <input type="text" name="username" value={username} readOnly />
-          <input type="file" name="image" placeholder="Image URL" onChange={handleInputChange} />
-          <textarea name="text" placeholder="Text" onChange={handleInputChange}></textarea>
+        <div className="modal mt-10 mb-10 flex justify-center items-center">
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <input type="text" name="username" value={username} readOnly />
+            <input type="file" name="image" placeholder="Image URL" onChange={handleInputChange} />
+            <textarea name="text" placeholder="Text" onChange={handleInputChange}></textarea>
+            <button
+              className="ml-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              type="submit"
+            >
+              Uploading content
+            </button>
+          </form>
           <button
-            className="ml-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            type="submit"
+            className="text-white ml-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            onClick={onClose}
           >
-            Upload Contents
+            Close Modal
           </button>
-        </form>
-        <button
-          className="text-white ml-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={onClose}
-        >
-          Close Modal
-        </button>
-      </div>
+        </div>
     );
   }
 
@@ -251,7 +263,7 @@ export default function Header() {
         onClose={() => setModalOpen(false)}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
-        uploadFeed={uploadFeed}
+        uploadFeed={UploadFeed}
       />
     </header>
   );
