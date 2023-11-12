@@ -21,7 +21,7 @@ export default function Join() {
           console.log(JSON.stringify(result.data));
           if (result.data.status === "success") {
             // Assuming you want to redirect to "/main" after successful registration
-            navigate("/main");
+            navigate("/");
           }
         })
         .catch((error) => {
