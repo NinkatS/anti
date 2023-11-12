@@ -12,6 +12,13 @@ export default function Join() {
 
   const navigate = useNavigate();
 
+  function handleJoinSuccess(result) {
+    // Assuming you want to redirect to "/" after successful registration
+    localStorage.setItem("token", result.headers["authorization"]);
+    document.cookie = `account=${JSON.stringify(account)}; path=/`; // Set the account information in a cookie
+    navigate("/", { state: { account } });
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     if (account.username && account.password) {
@@ -20,10 +27,8 @@ export default function Join() {
         .then((result) => {
           console.log(JSON.stringify(result.data));
           if (result.data.status === "success") {
-            // Assuming you want to redirect to "/main" after successful registration
-            localStorage.setItem("token", result.headers["authorization"])
-            console.log(localStorage)
-            navigate("/main", { state: { account } });
+            // Handle successful registration
+            handleJoinSuccess(result);
           }
         })
         .catch((error) => {

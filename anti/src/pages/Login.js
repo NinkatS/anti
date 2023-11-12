@@ -10,10 +10,15 @@ export default function Login() {
     password: "",
   });
 
-  const [authorization, setAuthorization] = useState(""); // authorization¿¡ accessToken
-
-
   const navigate = useNavigate();
+
+  function handleLoginSuccess(token) {
+    // ??? ??? ??? ??
+    document.cookie = `token=${token}; path=/`;
+
+    // ??? ?? ? ??? ??
+    navigate("/");
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -22,16 +27,11 @@ export default function Login() {
         .post("http://localhost:8080/login", account)
         .then((result) => {
           console.log(JSON.stringify(result.headers));
-          if (result.headers) {
-            setAccount({ username: account.username, password: account.password });
-            localStorage.setItem("token", result.headers["authorization"])
-            console.log(localStorage);
-            console.log(result.headers);
+          if (result.headers && result.headers["authorization"]) {
+            const token = result.headers["authorization"];
 
-            localStorage.setItem("account", JSON.stringify(account));
-            navigate("/main", { state: { account } });
-          
-            console.log(account);
+            // ??? ?? ? ??? ?? ??
+            handleLoginSuccess(token);
           }
         })
         .catch((error) => {
@@ -74,14 +74,14 @@ export default function Login() {
           Login
         </button>
         <div className="mt-4 text-center">
-        <p className="text-gray-600">Don't have an account?</p>
-        <button
-          onClick={() => navigate("/join")}
-          className="text-blue-500 underline cursor-pointer"
-        >
-          Sign Up
-        </button>
-      </div>
+          <p className="text-gray-600">Don't have an account?</p>
+          <button
+            onClick={() => navigate("/join")}
+            className="text-blue-500 underline cursor-pointer"
+          >
+            Sign Up
+          </button>
+        </div>
       </form>
     </div>
   );

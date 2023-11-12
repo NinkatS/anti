@@ -1,55 +1,28 @@
 import axios from "axios";
 import React, { useState } from "react";
-import "../App.css";
 
-export default function Header({ account }) {
+export default function Header() {
   const [uploadFeed, setUploadFeed] = useState({
     image: null,
     text: "",
   });
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(!!account?.username);
-  // const [accountData, setAccountData] = useState({
-  //   username: "",
-  // });
 
-  // const [authorization, setAuthorization] = useState(""); 
-  // const setUserAuth = (token) => {
-  //   setAuthorization(token);
-  // };
+  // 쿠키에서 계정 정보 읽어오기
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  };
 
-
-  // useEffect(()=>{
-  //   const storedToken = localStorage.getItem('token');
-  //   if(storedToken){
-  //     setAuthorization(storedToken);
-  //   }
-  //   getUserLogin();
-  // }, [])
-
-
-    // function getUserLogin() {
-    // axios
-    // .get("http://localhost:8080/login", {
-    //   Authorization: authorization
-    // })
-    //   .then((response) => {
-    //   setAccountData({ username: response.data });
-    //   setLoggedIn(true);
-    //   })
-    //   .catch((error) => {
-    //   console.log("autho: " + authorization)
-    //   console.error("Error fetching user information:", error);
-    //   });
-    // }
-
-
-
+  const username = getCookie('username');
+  const token = getCookie('token');
+  const isLoggedIn = !!username && !!token;
 
   function UploadFeed() {
     const formData = new FormData();
-    formData.append("username", account.username);
+    formData.append("username", username);
     formData.append("image", uploadFeed.image);
     formData.append("text", uploadFeed.text);
 
@@ -84,7 +57,7 @@ export default function Header({ account }) {
     return (
       <div className="modal mt-10 mb-10 flex justify-center items-center">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <input type="text" name="username" value={account.username} readOnly />
+          <input type="text" name="username" value={username} readOnly />
           <input type="file" name="image" placeholder="Image URL" onChange={handleInputChange} />
           <textarea name="text" placeholder="Text" onChange={handleInputChange}></textarea>
           <button
@@ -121,10 +94,12 @@ export default function Header({ account }) {
           <div className="flex items-center lg:order-2">
             {isLoggedIn ? (
               <>
-                <span className="text-gray-800 dark:text-white mr-2">Welcome, {account.username}!</span>
+                <span className="text-gray-800 dark:text-white mr-2">Welcome, {username}!</span>
                 <button
                   onClick={() => {
-                    setLoggedIn(false);
+                    // 쿠키에서 계정 정보 삭제
+                    document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                   }}
                   className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
                 >
