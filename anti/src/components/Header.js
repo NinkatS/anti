@@ -24,14 +24,20 @@ export default function Header({ account }) {
     getUserLogin();
   }, []);
 
-
+  useEffect(()=>{
+    const storedToken = localStorage.getItem('token');
+    if(storedToken){
+      setAuthorization(storedToken);
+    }
+    getUserLogin();
+  }, [])
 
 
     function getUserLogin() {
             // 로그인된 사용자 정보를 가져오는 요청을 보내세요.
     axios
     .get("http://localhost:8080/login", {
-      authorization: authorization,
+      Authorization: `Bearer ${authorization}`
     })
       .then((response) => {
       setAccountData({ username: response.data });
@@ -108,7 +114,7 @@ export default function Header({ account }) {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <a href="/" className="flex items-center">
             <img
-              src="https://flowbite.com/docs/images/logo.svg"
+              src="https://jmagazine.joins.com/_data2/photo/2023/02/2041357502_GrBcZaz9_1.jpg"
               className="mr-3 h-6 sm:h-9"
               alt="Flowbite Logo"
             />
