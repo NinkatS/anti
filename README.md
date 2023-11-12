@@ -7,17 +7,18 @@
 
 # 프로젝트 활용된 기술
 
-[기술 스택]
+## [기술 스택]
 백엔드 - 스프링부트, 스프링 시큐리티, 스프링 데이터 JPA, Amazon S3
 
 
 
 
-[ERDigram]
+## [ERDigram]
 ![image](https://github.com/NinkatS/anti/assets/91305949/091aac0a-4d6f-4c06-b2b9-65e57d34ef08)
 
+<br/>
 
-[Bearer 방식 JWT 로그인] 
+## [Bearer 방식 JWT 로그인] 
 ![image](https://github.com/NinkatS/anti/assets/91305949/a1bbd5e3-e28f-4cf6-a0dc-6b304ccc034e)
 Bearer 방식의 JWT 토큰을 이용해 로그인을 구현했습니다.
 
@@ -32,8 +33,10 @@ Bearer 방식의 JWT 토큰을 이용해 로그인을 구현했습니다.
 3. 인증
 클라이언트가 로그인 후 클라이언트가 request를 하면 header에 jwt토큰을 담아서 요청을 진행하게 되며 서버는
 클라이언트의 jwt토큰을 검증 후 response를 반환합니다.
+<br/>
 
-[AWS S3 이미지서버]
+
+## [AWS S3 이미지서버]
 
 ![image](https://github.com/NinkatS/anti/assets/91305949/9807a9fd-2e27-407a-b474-11f7b08d1501)
 
