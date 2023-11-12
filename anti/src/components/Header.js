@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
 
 export default function Header({ account }) {
@@ -10,43 +10,39 @@ export default function Header({ account }) {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(!!account?.username);
-  const [accountData, setAccountData] = useState({
-    username: "",
-  });
+  // const [accountData, setAccountData] = useState({
+  //   username: "",
+  // });
 
-  const [authorization, setAuthorization] = useState(""); 
-  const setUserAuth = (token) => {
-    setAuthorization(token);
-  };
-
-  useEffect(() => {
-    // 페이지 로딩 시 로그인 여부 확인
-    getUserLogin();
-  }, []);
-
-  useEffect(()=>{
-    const storedToken = localStorage.getItem('token');
-    if(storedToken){
-      setAuthorization(storedToken);
-    }
-    getUserLogin();
-  }, [])
+  // const [authorization, setAuthorization] = useState(""); 
+  // const setUserAuth = (token) => {
+  //   setAuthorization(token);
+  // };
 
 
-    function getUserLogin() {
-            // 로그인된 사용자 정보를 가져오는 요청을 보내세요.
-    axios
-    .get("http://localhost:8080/login", {
-      Authorization: `Bearer ${authorization}`
-    })
-      .then((response) => {
-      setAccountData({ username: response.data });
-      setLoggedIn(true);
-      })
-      .catch((error) => {
-      console.error("Error fetching user information:", error);
-      });
-    }
+  // useEffect(()=>{
+  //   const storedToken = localStorage.getItem('token');
+  //   if(storedToken){
+  //     setAuthorization(storedToken);
+  //   }
+  //   getUserLogin();
+  // }, [])
+
+
+    // function getUserLogin() {
+    // axios
+    // .get("http://localhost:8080/login", {
+    //   Authorization: authorization
+    // })
+    //   .then((response) => {
+    //   setAccountData({ username: response.data });
+    //   setLoggedIn(true);
+    //   })
+    //   .catch((error) => {
+    //   console.log("autho: " + authorization)
+    //   console.error("Error fetching user information:", error);
+    //   });
+    // }
 
 
 
@@ -159,7 +155,7 @@ export default function Header({ account }) {
                     if (!isLoggedIn) {
                       window.location.href = "/login";
                     } else {
-                      setModalOpen(!isModalOpen);
+                      setModalOpen(isModalOpen);
                     }
                   }}
                 >

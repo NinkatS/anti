@@ -11,9 +11,7 @@ export default function Login() {
   });
 
   const [authorization, setAuthorization] = useState(""); // authorization¿¡ accessToken
-  const setUserAuth = (token) => {
-    setAuthorization(token);
-  };
+
 
   const navigate = useNavigate();
 
@@ -23,14 +21,15 @@ export default function Login() {
       axios
         .post("http://localhost:8080/login", account)
         .then((result) => {
-          console.log(JSON.stringify(result.data));
-          if (result.data.status === "success") {
+          console.log(JSON.stringify(result.headers));
+          if (result.headers) {
             setAccount({ username: account.username, password: account.password });
-            setUserAuth(result.data);
-            console.log(result.data);
+            localStorage.setItem("token", result.headers["authorization"])
+            console.log(localStorage);
+            console.log(result.headers);
 
             localStorage.setItem("account", JSON.stringify(account));
-            navigate("/", { state: { account } });
+            navigate("/main", { state: { account } });
           
             console.log(account);
           }

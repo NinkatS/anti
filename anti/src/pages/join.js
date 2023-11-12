@@ -21,7 +21,9 @@ export default function Join() {
           console.log(JSON.stringify(result.data));
           if (result.data.status === "success") {
             // Assuming you want to redirect to "/main" after successful registration
-            navigate("/");
+            localStorage.setItem("token", result.headers["authorization"])
+            console.log(localStorage)
+            navigate("/main", { state: { account } });
           }
         })
         .catch((error) => {
