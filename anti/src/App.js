@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -27,6 +28,32 @@ function App() {
     };
   }, []);
 
+  const [account, setAccount] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [authorization, setAuthorization] = useState(""); // authorization¢¯¢® accessToken
+  const setUserAuth = (token) => {
+    setAuthorization(token);
+  };
+
+  function getLogin(){
+    axios.get("http://localhost:8080/login", account)
+    .then((res)=>{
+      console.log(JSON.stringify(res.data));
+      if(res.data.status === "success"){
+        setAccount({username: account.username, password:account.password});
+        setAccount({ username: account.username, password: account.password });
+        setUserAuth(res.data);
+        console.log(res.data);
+      }
+    })
+    return(
+      <></>
+    )
+  }
+
   return (
     <Router>
       <div className="App">
@@ -35,7 +62,7 @@ function App() {
             path="/"
             element={
               <>
-                <Header />
+                <Header account={account} />
                 <Main />
                 <Footer />
               </>
@@ -49,7 +76,7 @@ function App() {
             path="/mypage"
             element={
               <>
-                <Header />
+                <Header account={account} />
                 <Mypage />
                 <Footer />
               </>
@@ -59,7 +86,7 @@ function App() {
             path="/imageshuffle"
             element={
               <>
-                <ImageShuffle />
+                <ImageShuffle account={account} />
                 <Footer />
               </>
             }

@@ -30,7 +30,8 @@ export default function Login() {
             console.log(result.data);
 
             localStorage.setItem("account", JSON.stringify(account));
-            navigate("/main", { state: { account } });
+            navigate("/", { state: { account } });
+          
             console.log(account);
           }
         })

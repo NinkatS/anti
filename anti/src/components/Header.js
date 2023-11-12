@@ -2,19 +2,19 @@ import axios from "axios";
 import React, { useState } from "react";
 import "../App.css";
 
-export default function Header() {
+export default function Header({ account }) {
   const [uploadFeed, setUploadFeed] = useState({
-    username: "",
+    //username: "",
     image: null,
     text: "",
   });
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(!!account?.username);
 
   function UploadFeed() {
-    // FormData 객체를 사용하여 이미지와 텍스트 데이터를 서버로 전송
     const formData = new FormData();
-    formData.append("username", uploadFeed.username);
+    formData.append("username", account.username);
     formData.append("image", uploadFeed.image);
     formData.append("text", uploadFeed.text);
 
@@ -29,11 +29,9 @@ export default function Header() {
   function handleInputChange(e) {
     const { name, value, type } = e.target;
 
-    // 파일 입력인 경우
     if (type === "file") {
       setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: e.target.files[0] }));
     } else {
-      // 일반 입력인 경우
       setUploadFeed((prevFeed) => ({ ...prevFeed, [name]: value }));
     }
   }
@@ -51,27 +49,22 @@ export default function Header() {
     return (
       <div className="modal mt-10 mb-10 flex justify-center items-center">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-          />
-          <input
-            type="file"
-            name="image"
-            placeholder="Image URL"
-          />
-          <textarea
-            name="text"
-            placeholder="Text"
-          ></textarea>
-          <button 
-          className="ml-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          type="submit">Upload Contents</button>
+        <input type="text" name="username" value={account.username} readOnly/>
+          <input type="file" name="image" placeholder="Image URL" />
+          <textarea name="text" placeholder="Text"></textarea>
+          <button
+            className="ml-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            type="submit"
+          >
+            Upload Contents
+          </button>
         </form>
-        <button 
-        className="text-white ml-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={onClose}>Close Modal</button>
+        <button
+          className="text-white ml-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          onClick={onClose}
+        >
+          Close Modal
+        </button>
       </div>
     );
   }
@@ -91,54 +84,70 @@ export default function Header() {
             </span>
           </a>
           <div className="flex items-center lg:order-2">
-            <a
-              href="/login"
-              className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-            >
-              Log in
-            </a>
+            {isLoggedIn ? (
+              <>
+                <span className="text-gray-800 dark:text-white mr-2">Welcome, {account.username}!</span>
+                <button
+                  onClick={() => {
+                    setLoggedIn(false);
+                  }}
+                  className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <a
+                  href="/login"
+                  className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                >
+                  Log in
+                </a>
 
-            <a
-              href="#"
-              className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-              onClick={() => setModalOpen(!isModalOpen)}
-            >
-              Get started
-            </a>
+                <a
+                  href="#"
+                  className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  onClick={() => setModalOpen(!isModalOpen)}
+                >
+                  Get started
+                </a>
 
-            <button
-              data-collapse-toggle="mobile-menu-2"
-              type="button"
-              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="mobile-menu-2"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <svg
-                className="hidden w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
+                <button
+                  data-collapse-toggle="mobile-menu-2"
+                  type="button"
+                  className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                  aria-controls="mobile-menu-2"
+                  aria-expanded="false"
+                >
+                  <span className="sr-only">Open main menu</span>
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <svg
+                    className="hidden w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
           <div
             className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
@@ -186,9 +195,9 @@ export default function Header() {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
         handleSubmit={handleSubmit}
+        handleInputChange={handleInputChange}
         uploadFeed={uploadFeed}
-            />
+      />
     </header>
-    
   );
 }
