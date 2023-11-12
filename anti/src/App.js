@@ -8,6 +8,7 @@ import ImageShuffle from './components/Imageshuffle';
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Mypage from './pages/Mypage';
+import Join from './pages/join';
 
 function App() {
   useEffect(() => {
@@ -63,6 +64,7 @@ function App() {
               </>
             }
           />
+          <Route path='/join' element={ <Join />}></Route>
         </Routes>
       </div>
     </Router>

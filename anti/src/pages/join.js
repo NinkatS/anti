@@ -1,19 +1,14 @@
-// Login.js
+// Join.js
 
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Join() {
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
-
-  const [authorization, setAuthorization] = useState(""); // authorization¿¡ accessToken
-  const setUserAuth = (token) => {
-    setAuthorization(token);
-  };
 
   const navigate = useNavigate();
 
@@ -21,21 +16,16 @@ export default function Login() {
     event.preventDefault();
     if (account.username && account.password) {
       axios
-        .post("http://localhost:8080/login, account)
+        .post("http://localhost:8080/join", account)
         .then((result) => {
           console.log(JSON.stringify(result.data));
           if (result.data.status === "success") {
-            setAccount({ username: account.username, password: account.password });
-            setUserAuth(result.data);
-            console.log(result.data);
-
-            localStorage.setItem("account", JSON.stringify(account));
-            navigate("/main", { state: { account } });
-            console.log(account);
+            // Assuming you want to redirect to "/main" after successful registration
+            navigate("/main");
           }
         })
         .catch((error) => {
-          console.error("Error during login:", error);
+          console.error("Error during registration:", error);
         });
     }
   }
@@ -43,7 +33,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-80">
-        <h2 className="text-2xl font-semibold mb-6">Login</h2>
+        <h2 className="text-2xl font-semibold mb-6">Sign Up</h2>
         <div className="mb-4">
           <label htmlFor="username" className="block text-sm font-medium text-gray-600">
             Username
@@ -71,17 +61,8 @@ export default function Login() {
           />
         </div>
         <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md">
-          Login
-        </button>
-        <div className="mt-4 text-center">
-        <p className="text-gray-600">Don't have an account?</p>
-        <button
-          onClick={() => navigate("/join")}
-          className="text-blue-500 underline cursor-pointer"
-        >
           Sign Up
         </button>
-      </div>
       </form>
     </div>
   );
