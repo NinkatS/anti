@@ -30,9 +30,11 @@ export default function Header({ account }) {
     function getUserLogin() {
             // 로그인된 사용자 정보를 가져오는 요청을 보내세요.
     axios
-    .get("http://localhost:8080/login", accountData)
+    .get("http://localhost:8080/login", {
+      authorization: authorization,
+    })
       .then((response) => {
-      setAccountData({ username: response.headers });
+      setAccountData({ username: response.data });
       setLoggedIn(true);
       })
       .catch((error) => {
