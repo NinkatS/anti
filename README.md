@@ -38,12 +38,68 @@ Bearer 방식의 JWT 토큰을 이용해 로그인을 구현했습니다.
 ![image](https://github.com/NinkatS/anti/assets/91305949/9807a9fd-2e27-407a-b474-11f7b08d1501)
 
 
-1. canvas태그를 이용해 이미지를 자바스크립트로 동적으로 렌더링하기위해서는 crop된 이미지가 필요하다. 그에 따라 많은 이미지를 저장할 있는 대용량의 서버가 필요하다.
+1. canvas태그를 이용해 이미지를 자바스크립트로 동적으로 렌더링하기위해서는 크롭된 이미지가 필요하다. 그에 따라 많은 이미지를 저장할 있는 대용량의 서버가 필요하다.
 2. 이미지를 렌더링하기 위해 이미지의 url을 관리해주는 서버가 필요하다.
 
 위와 같은 필요로 이미지 서버의 필요성을 느꼈습니다. 그래서 저희는 Amazon Web Service S3 기능을 활용해 이미지 서버를 구현했습니다.
-클라이언트가 ariticle의 이미지를 서버로 보내면 서버는 이미지를 16장의 이미지로 crop해 AWS S3에 저장하도록
-구현했습니다.
+저희는 canvas에서 크롭된 이미지를 사용하므로 이미지를 크롭하기 위해 다음과 같은 로직을 이용했습니다.
+1. 최초의 기본 이미지를 AWS S3에 업로드합니다.
+2. S3에 업로드된 이미지를 uri를 이용해 BufferedImage로 로드합니다.
+3. 로드된 BufferedImage를 자바 awt를 이용해 크롭하고 크롭된이미지를 AWS S3에 저장합니다.
 
+build.gradle dependency추가
+```
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+```
+
+application.yml 추가
+```
+    cloud:
+  aws:
+    s3:
+      bucket: antiimages
+    stack:
+      auto: false
+    credentials:
+      access-key: {access-key}
+      secret-key: {secret-key}
+    region:
+      static: ap-northeast-2
+
+```
+AwsS3Config
+```
+   @Configuration
+public class AwsS3Config {
+
+    @Value("${cloud.aws.credentials.access-key}")
+    private String accessKey;
+
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String secretKey;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
+
+    @Bean
+    public AmazonS3Client amazonS3Client(){
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,secretKey);
+        return (AmazonS3Client) AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .build();
+    }
+}
+
+```
+AWS S3 이미지 저장
+```
+    ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(imageFile.getContentType());;
+        objectMetadata.setContentLength(imageFile.getSize());
+        amazonS3Client.putObject(bucket,storeFileName,imageFile.getInputStream(),objectMetadata);
+        imageProcessor.cropImage(getS3URI(image.getStoreFileName()), image.getStoreFileName());
+        imageProcessor.blurImage(getS3URI(image.getStoreFileName()), image.getStoreFileName());
+```
 
 
