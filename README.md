@@ -1,4 +1,4 @@
-![image](https://github.com/NinkatS/anti/assets/110469274/b02c50cc-df9a-4a20-8dfc-2f6c16c6f6a7)![image](https://github.com/NinkatS/anti/assets/110469274/b7ef0bc9-56fa-4b77-959e-75a05da9919f)# [대구를 빛내는 해커톤] AntI
+
 ### S타입: 창작자의 저작권을 보호하고 AI의 무단 데이터 수집을 방지하기 위한 온라인 플랫폼
 
 # 프로젝트 설명
