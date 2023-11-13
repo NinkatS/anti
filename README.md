@@ -1,9 +1,9 @@
-# [대구를 빛내는 해커톤] AntI
+![image](https://github.com/NinkatS/anti/assets/110469274/b02c50cc-df9a-4a20-8dfc-2f6c16c6f6a7)![image](https://github.com/NinkatS/anti/assets/110469274/b7ef0bc9-56fa-4b77-959e-75a05da9919f)# [대구를 빛내는 해커톤] AntI
 ### S타입: 창작자의 저작권을 보호하고 AI의 무단 데이터 수집을 방지하기 위한 온라인 플랫폼
 
 # 프로젝트 설명
-무단 크롤링을 방지하게 위해
---- 기능 사용
+무단 크롤링 및 복제 방지 기술과 법적 보호로 창작자의 저작권을 지키는 웹
+
 
 # 프로젝트 활용된 기술
 
