@@ -4,6 +4,8 @@
 # 프로젝트 설명
 무단 크롤링 및 복제 방지 기술과 법적 보호로 창작자의 저작권을 지키는 웹
 
+#Youtube link
+https://youtu.be/e3UIO-yXY3w
 
 # 프로젝트 활용된 기술
 
